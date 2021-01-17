@@ -1,9 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable] struct CameraSet{
-    [SerializeField] public Camera PrevCamera;
-    [SerializeField] public Camera NextCamera;
+[Serializable] public struct CameraSet{
+    [Serializable]public struct data{
+        public Camera camera;
+        public AudioListener audioListener;
+    };
+
+    [SerializeField] public data PrevCamera;
+    [SerializeField] public data NextCamera;
+    
 };
 
 public class CameraController : MonoBehaviour
@@ -16,10 +22,16 @@ public class CameraController : MonoBehaviour
         if (other.tag != "Model")
             return;
         
-        if (cameraSet.PrevCamera)
-            cameraSet.PrevCamera.enabled = false;
-        if (cameraSet.NextCamera)
-            cameraSet.NextCamera.enabled = true;
+        if (cameraSet.PrevCamera.camera.enabled){
+            cameraSet.PrevCamera.camera.enabled = false;
+            cameraSet.PrevCamera.audioListener.enabled = false;
+        }
+            
+        if (!cameraSet.NextCamera.camera.enabled){
+            cameraSet.NextCamera.camera.enabled = true;
+            cameraSet.NextCamera.audioListener.enabled = true;
+        }
+            
 
     }
 }
